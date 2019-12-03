@@ -11,7 +11,7 @@ function  loadValueOfProfile(data)
 for (var i in data)
 {
 
-data[i][0] =  '<div class="dropdown"><i class="fas fa-copy" idprofile='+data[i][0]+'></i></div><div class="dropdown"><i class="fas fa-ellipsis-v" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i><div class="dropdown-menu" aria-labelledby="dropdownMenuButton"><a class="dropdown-item" idprofile='+data[i][0]+'>Edit</a><a class="dropdown-item" idprofile='+data[i][0]+'>Delete</a></div></div>';
+data[i][0] =  '<div class="dropdown"><a class="copyicon" href="https://script.google.com/a/basebs.com/macros/s/AKfycbyse0zFrxZu0g39M42tDFl2hqzCL0jwCNcVG0JqH_zMw-iP3ilK/exec?v=profilescopy&&profileid='+data[i][0]+'"><i class="fas fa-copy" idprofile='+data[i][0]+'></i></a></div><div class="dropdown"><i class="fas fa-ellipsis-v" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i><div class="dropdown-menu" aria-labelledby="dropdownMenuButton"><a class="dropdown-item" idprofile='+data[i][0]+' href="https://script.google.com/a/basebs.com/macros/s/AKfycbyse0zFrxZu0g39M42tDFl2hqzCL0jwCNcVG0JqH_zMw-iP3ilK/exec?v=profilesedit&&profileid='+data[i][0]+'">Edit</a><a class="dropdown-item" idprofile='+data[i][0]+'>Delete</a></div></div>';
 
 dataallprofile.push(data[i]);
 }

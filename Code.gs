@@ -45,6 +45,24 @@ function doGet(e) {
     return HtmlService.createTemplateFromFile('profilesAdd').evaluate();
   }
   
+  if(e.parameter.v == "profilesedit" && e.parameter.profileid)
+  {
+    var html = HtmlService.createTemplateFromFile('profilesEdit');
+    
+    html.dataid = e.parameter.profileid;
+    
+    return html.evaluate();
+  }
+  
+  if(e.parameter.v == "profilescopy" && e.parameter.profileid)
+  {
+    var html = HtmlService.createTemplateFromFile('profilesCopy');
+    
+    html.dataid = e.parameter.profileid;
+    
+    return html.evaluate();
+  }
+  
   if(e.parameter.v == "sharingrules")
   {
     return HtmlService.createTemplateFromFile('sharingrules').evaluate();
