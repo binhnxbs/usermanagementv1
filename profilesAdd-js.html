@@ -5,6 +5,10 @@ var emailUser = "binhnx@gmail.com";
 
 $(document).ready(function() {
 
+$("#loader").hide();
+
+$("body").removeAttr("style");
+
 google.script.run.withSuccessHandler(loadValueOfCreateNewProfile).loadValueOfCreateNewProfile();
 
 function loadValueOfCreateNewProfile(data)
@@ -160,6 +164,9 @@ $("#loader").show();
 
 $("body").css({"cursor":"wait","pointer-events":"none"});
 
+$("input[type='submit']").attr("disabled",true);
+
+$("input[type='button']").attr("disabled",true);
 
 google.script.run.withSuccessHandler(showNotification).createNewProfile(datasave);
 
@@ -173,6 +180,13 @@ function showNotification(boolean) {
       $("#loader").hide();
       
       $("body").removeAttr("style");
+      
+      Swal.fire({
+      title:'Successfully !',
+      type:'success',
+      showConfirmButton: false,
+      });
+      setTimeout(function(){ window.history.back(); }, 2000);
       
       
     } else {
