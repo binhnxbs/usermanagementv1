@@ -1,0 +1,184 @@
+<script>
+
+var datacheck = [];
+var emailUser = "binhnx@gmail.com";
+
+$(document).ready(function() {
+
+google.script.run.withSuccessHandler(loadValueOfCreateNewProfile).loadValueOfCreateNewProfile();
+
+function loadValueOfCreateNewProfile(data)
+  {
+    for (var i in data)
+    {
+      data[i][1] = "<input type='checkbox' class='checkboxwithnametitle' name="+data[i][0]+" id="+data[i][0]+" value="+data[i][0]+">"+data[i][1]+"";
+      data[i].push("<input type='checkbox' class='checkboxview' name="+data[i][0]+" value='1'>");
+      data[i].push("<input type='checkbox' class='checkboxcreate' name="+data[i][0]+" value='1'>");
+      data[i].push("<input type='checkbox' class='checkboxedit' name="+data[i][0]+" value='1'>");
+      data[i].push("<input type='checkbox' class='checkboxdelete' name="+data[i][0]+" value='1'>");
+      
+      datacheck.push(data[i]);
+    }
+    
+    
+    $('#profileprivileges').DataTable({
+    data:datacheck,
+    columns: [
+    { title:"Entity ID"},
+    { title: "<input type='checkbox' class='checkboxwithname'>"+ "Entity",},
+    { title: "<input type='checkbox' class='checkboxwithname'>"+"View" },
+    { title: "<input type='checkbox' class='checkboxwithname'>"+"Create" },
+    { title: "<input type='checkbox' class='checkboxwithname'>"+"Edit" },
+    { title: "<input type='checkbox' class='checkboxwithname'>"+"Delete" },
+    ],
+    "columnDefs": [
+    {
+    "targets": [0],
+    "visible": false,
+    "searchable": false
+    },
+    ],
+    scrollCollapse: true,
+    paging:         false,
+    searching: false,
+    "ordering": false,
+    "orderCellsTop": true,
+    });
+ 
+    $("*[type='checkbox']").prop("checked",true);
+    
+  }
+
+  });
+  
+  
+ $(document).on("change",".checkboxwithname",function() {
+  var index = $(this).parent().index();
+  console.log(index);
+  
+  if(index != 0 || index != 1)
+  {
+  if($(this).is(":checked"))
+  {
+    $('table tbody tr td:nth-child('+(parseInt(index) + 1)+')').find("input").prop("checked",true);
+  }
+  else
+  {  
+    $('table tbody tr td:nth-child('+(parseInt(index) + 1)+')').find("input").prop("checked",false);
+  }
+  }
+  
+  if(index == 0 || index == 1)
+  {
+  if($(this).is(":checked"))
+  {
+   $("*[type='checkbox']").prop("checked",true); 
+  }
+  else
+  {  
+   $("*[type='checkbox']").prop("checked",false);
+  }
+  }
+});
+
+
+$(document).on("change",".checkboxwithnametitle",function() {
+var index = $(this).parent().index();
+console.log(index);
+
+if($(this).is(":checked"))
+{
+$(this).parent().parent().find("td").find("input").prop("checked",true);
+}
+else
+{  
+$(this).parent().parent().find("td").find("input").prop("checked",false);
+}
+
+});
+
+$(document).on("change",".checkboxview",function() {
+var index = $(this).parent().index();
+console.log(index);
+
+if($(this).is(":checked"))
+{
+$(this).parent().parent().find("td:eq(0)").find("input").prop("checked",true);
+}
+else
+{  
+$(this).parent().parent().find("td").find("input").prop("checked",false);
+}
+
+});
+
+function saveProfiles(e)
+{
+
+e.preventDefault();
+
+var name = $("#profilename").val().trim();
+var des = $("#profiledes").val();
+
+var datasave = [];
+
+datasave.push([emailUser,name,des]);
+
+var dataprivilege = [];
+
+
+
+var totalid = $("input[id^='ENT']").length;
+
+for (var i = 0; i < totalid; i++)
+{
+
+var dataeachprivilege = [];
+
+var identity = $("tbody tr:eq("+i+") input[id^='ENT']").attr("id");
+
+$.each($("tbody tr input[name="+identity+"]"), function(){
+
+if($(this).is(":checked"))
+{
+dataeachprivilege.push($(this).val());
+}
+
+else
+dataeachprivilege.push("0");
+
+});
+
+dataprivilege.push(dataeachprivilege);
+}
+
+
+datasave.push(dataprivilege);
+console.log(datasave);
+
+$("#loader").show();
+
+$("body").css({"cursor":"wait","pointer-events":"none"});
+
+
+google.script.run.withSuccessHandler(showNotification).createNewProfile(datasave);
+
+}
+
+function showNotification(boolean) {
+
+    if (boolean) {
+      console.log(boolean);
+      
+      $("#loader").hide();
+      
+      $("body").removeAttr("style");
+      
+      
+    } else {
+      console.log(boolean);
+    }
+
+}
+   
+</script>
