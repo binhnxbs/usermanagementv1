@@ -1,0 +1,60 @@
+<script>
+
+var emailUser = "binhnx@gmail.com";
+
+$(document).ready(function() {
+
+$("#loader").hide();
+
+$("body").removeAttr("style");
+});
+
+function saveEntities(e)
+{
+e.preventDefault();
+
+var name = $("#entityname").val().trim();
+
+var datasave = [];
+
+datasave.push(emailUser,name);
+
+console.log(datasave);
+
+$("#loader").show();
+
+$("body").css({"cursor":"wait","pointer-events":"none"});
+
+$("input[type='submit']").attr("disabled",true);
+
+$("input[type='button']").attr("disabled",true);
+
+google.script.run.withSuccessHandler(showNotification).createNewEntity(datasave);
+
+}
+
+
+function showNotification(boolean) {
+
+    if (boolean) {
+      console.log(boolean);
+      
+      $("#loader").hide();
+      
+      $("body").removeAttr("style");
+      
+      Swal.fire({
+      title:'Successfully !',
+      type:'success',
+      showConfirmButton: false,
+      });
+      setTimeout(function(){ window.history.back(); }, 2000);
+      
+      
+    } else {
+      console.log(boolean);
+    }
+
+}
+
+</script>

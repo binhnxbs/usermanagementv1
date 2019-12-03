@@ -1,5 +1,7 @@
 var IDDBSYS = "1hAKrx46NY5lYHpSiAlj2mPLVjxp9D2QKGRnS3JJb2WM";
 
+var IDFOLDERDBSYS = "1Iy3ICeCkLi9jKQBXUzVX_X3iftBee2n4";
+
 function doGet(e) {
    if(e.parameter.v == "users")
   {
@@ -68,6 +70,16 @@ function doGet(e) {
     return HtmlService.createTemplateFromFile('sharingrules').evaluate();
   }
   
+  if(e.parameter.v == "entities")
+  {
+    return HtmlService.createTemplateFromFile('entities').evaluate();
+  }
+  
+  if(e.parameter.v == "entitiesadd")
+  {
+    return HtmlService.createTemplateFromFile('entitiesAdd').evaluate();
+  }
+  
   else
   {
     return HtmlService.createTemplateFromFile('users').evaluate();
@@ -77,4 +89,15 @@ function doGet(e) {
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename)
       .getContent();
+}
+
+function generateID(prefix, index, length) {
+
+  var numberOfZero = length - index.toString().length;
+  var ID = prefix;
+  for (i = 0; i < numberOfZero; i++) {
+    ID = ID + '0';
+  }
+  ID = ID + index.toString();
+  return ID;
 }
