@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<base target="_top">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>SB Admin 2 - Dashboard</title>
+
+<!-- Custom fonts for this template-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+<link rel="stylesheet" href="https://static.jstree.com/3.3.8/assets/dist/themes/default/style.min.css">
+<link rel="stylesheet" href="https://static.jstree.com/3.3.8/assets/docs.css">
+
+
+<!-- Custom styles for this template-->
+<?!= include('sbadmin2css');?>
+
+<?!= include('style');?>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+<?!= include('sidebar');?>
+
+<!-- Content Wrapper -->
+<div id="content-wrapper" class="d-flex flex-column">
+
+<!-- Main Content -->
+<div id="content">
+
+<?!= include('topbar');?>
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+<div class="row">
+<div class="col-md-4 col-sm-8 col-xs-8">
+<button type="button" class="btn btn-success" onclick="createrole();"><i class="glyphicon glyphicon-asterisk"></i> Create</button>
+<button type="button" class="btn btn-success" onclick="demo_create();"><i class="glyphicon glyphicon-asterisk"></i> Create Node</button>
+<button type="button" class="btn btn-warning" onclick="demo_rename();"><i class="glyphicon glyphicon-pencil"></i> Rename</button>
+<button type="button" class="btn btn-danger" onclick="demo_delete();" id="deleterolesnode"><i class="glyphicon glyphicon-remove"></i> Delete</button>
+<button type="button" class="btn btn-primary"><i class="glyphicon glyphicon-remove"></i>Save</button>
+</div>
+<div class="col-md-2 col-sm-4 col-xs-4" style="text-align:right;">
+<input type="text" value="" style="box-shadow:inset 0 0 4px #eee; width:120px; margin:0; padding:6px 12px; border-radius:4px; border:1px solid silver; font-size:1.1em;" id="demo_q" placeholder="Search">
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-12">
+<div id="jstree_demo" class="demo jstree jstree-1 jstree-default" style="margin-top:1em;" role="tree" aria-multiselectable="true" tabindex="0" aria-activedescendant="demo_root_1" aria-busy="false">
+</div>
+</div>
+</div>
+
+
+<div id="resultText"></div>
+
+</div>
+<!-- /.container-fluid -->
+
+</div>
+<!-- End of Main Content -->
+
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+<div class="container my-auto">
+<div class="copyright text-center my-auto">
+<span>Copyright &copy; Base Business Solution 2019</span>
+</div>
+</div>
+</footer>
+<!-- End of Footer -->
+
+</div>
+<!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+<i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">×</span>
+</button>
+</div>
+<div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+<a class="btn btn-primary" href="login.html">Logout</a>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>  
+
+<!-- Core plugin JavaScript-->
+<?!= include('jqueryeasingjs');?>
+
+<!-- Custom scripts for all pages-->
+<?!= include('sbadmin2js');?>
+
+<!-- Page level plugins -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+<script>
+
+var reportto = "";
+
+function createrole()
+{
+  window.open("https://script.google.com/a/basebs.com/macros/s/AKfycbyse0zFrxZu0g39M42tDFl2hqzCL0jwCNcVG0JqH_zMw-iP3ilK/exec?v=rolesadd&&reportto="+reportto+"","_top");
+}
+
+function demo_create() {
+var ref = $('#jstree_demo').jstree(true),
+sel = ref.get_selected();
+if(!sel.length) { return false; }
+sel = sel[0];
+sel = ref.create_node(sel, {"type":"file"});
+if(sel) {
+ref.edit(sel);
+}
+};
+function demo_rename() {
+var ref = $('#jstree_demo').jstree(true),
+sel = ref.get_selected();
+if(!sel.length) { return false; }
+sel = sel[0];
+ref.edit(sel);
+};
+function demo_delete() {
+var ref = $('#jstree_demo').jstree(true),
+sel = ref.get_selected();
+console.log(sel.length);
+console.log(sel);
+if(sel.length == 0) { return false; }
+if(sel.length > 0 && !sel.includes("j1_1"))
+{
+ref.delete_node(sel);
+}
+};
+$(function () {
+var to = false;
+$('#demo_q').keyup(function () {
+if(to) { clearTimeout(to); }
+to = setTimeout(function () {
+var v = $('#demo_q').val();
+$('#jstree_demo').jstree(true).search(v);
+}, 250);
+});
+
+$('#jstree_demo')
+.jstree({
+"core" : {
+"animation" : 0,
+"check_callback" : true,
+'force_text' : true,
+"themes" : { "stripes" : true },
+'data' : [
+{ "text" : "Organization", }
+]
+},
+
+"plugins" : [ "dnd", "search", "state", "types", "wholerow" ],
+});
+});
+
+
+
+ $('#jstree_demo').on('changed.jstree', function (e, data) {
+        var i, j, r = [];
+        for (i = 0, j = data.selected.length; i < j; i++) {
+            r.push(data.instance.get_node(data.selected[i]).text);
+            reportto = data.instance.get_node(data.selected[i]).text;
+        }
+        $('#resultText').html('Selected: ' + r.join(', '));
+    }).jstree();
+
+
+</script>
+
+
+<!-- Page level custom scripts -->
+<script src="https://static.jstree.com/3.3.8/assets/jquery.address-1.6.js"></script>
+<script src="https://static.jstree.com/3.3.8/assets/vakata.js"></script>
+<script src="https://static.jstree.com/3.3.8/assets/dist/jstree.min.js"></script>
+<script src="https://www.jstree.com/static/site.js"></script>
+
+
+</body>
+</html>
+
+
