@@ -1,0 +1,34 @@
+<script>
+
+var dataallprofile = [];
+
+$(document).ready(function() {
+
+google.script.run.withSuccessHandler(loadValueOfProfile).loadValueOfProfile();
+
+function  loadValueOfProfile(data)
+{
+for (var i in data)
+{
+
+data[i][0] =  '<div class="dropdown"><i class="fas fa-copy" idprofile='+data[i][0]+'></i></div><div class="dropdown"><i class="fas fa-ellipsis-v" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i><div class="dropdown-menu" aria-labelledby="dropdownMenuButton"><a class="dropdown-item" idprofile='+data[i][0]+'>Edit</a><a class="dropdown-item" idprofile='+data[i][0]+'>Delete</a></div></div>';
+
+dataallprofile.push(data[i]);
+}
+
+
+$('#profilelist').DataTable({
+data:dataallprofile,
+columns: [
+{ title:"Action"},
+{ title:"Name",},
+{ title:"Description" },
+],
+
+"orderCellsTop": true,
+});
+
+}
+
+});
+</script>
