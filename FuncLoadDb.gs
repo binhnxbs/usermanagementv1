@@ -4,3 +4,10 @@ function loadValueOfCreateNewProfile() {
     return data;
 
 }
+
+function loadValueOfProfile() {
+
+    var data = ModunUserMan.loadValueOfProfile();
+    return data;
+
+}

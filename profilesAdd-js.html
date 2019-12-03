@@ -153,8 +153,14 @@ dataprivilege.push(dataeachprivilege);
 }
 
 
-datasave.push(dataprivilege)
+datasave.push(dataprivilege);
 console.log(datasave);
+
+$("#loader").show();
+
+$("body").css({"cursor":"wait","pointer-events":"none"});
+
+
 google.script.run.withSuccessHandler(showNotification).createNewProfile(datasave);
 
 }
@@ -163,6 +169,12 @@ function showNotification(boolean) {
 
     if (boolean) {
       console.log(boolean);
+      
+      $("#loader").hide();
+      
+      $("body").removeAttr("style");
+      
+      
     } else {
       console.log(boolean);
     }
