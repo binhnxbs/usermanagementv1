@@ -154,31 +154,7 @@
 
 
 <!-- Page level custom scripts -->
-<script>
-
-
-var html = '<div class="dropdown"><i class="fas fa-copy"></i></div><div class="dropdown"><i class="fas fa-ellipsis-v" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i><div class="dropdown-menu" aria-labelledby="dropdownMenuButton"><a class="dropdown-item">Edit</a><a class="dropdown-item">Delete</a></div></div>';
-
-var dataSet = [
-    [ ""+html+"","Admin", "Admin Profile"],
-    [ ""+html+"","Supervisor", "Supervisor Profile"],
-  
-];
-  
-$(document).ready(function() {
-  
-  $('#profilelist').DataTable({
-  data:dataSet,
-  columns: [
-            { title: "Action" },
-            { title: "Name" },
-            { title: "Description" },
-        ],
- 
-  "orderCellsTop": true,
-  });
-  });
-</script>
+<?!= include('profiles-js');?>
 
 
 </body>
