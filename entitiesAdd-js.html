@@ -17,9 +17,39 @@ var name = $("#entityname").val().trim();
 
 var datasave = [];
 
-datasave.push(emailUser,name);
+var datalabel = [];
+
+datasave.push([emailUser,name]);
 
 console.log(datasave);
+
+var fieldlen = $("div[id^='row']").length;
+
+for (var i = 0; i < fieldlen; i++)
+{
+//    inputid.push($("#row"+(i+1)+"").find("select[id^='input']").attr("id"));
+    datalabel.push($("#row"+(i+1)+"").find("input[id^='label']").val());
+//    inputtype.push($("#row"+(i+1)+"").find("#input"+(i+1)+"").val());
+//    required.push($("#row"+(i+1)+"").find("input[name^='required']:checked").val());
+//    readonly.push($("#row"+(i+1)+"").find("input[name^='readonly']:checked").val());
+//    placeholder.push($("#row"+(i+1)+"").find("input[id^=pl"+(i+1)+"]").val());
+//    maxlength.push($("#row"+(i+1)+"").find("input[id^=ml"+(i+1)+"]").val());
+//    cols.push($("#row"+(i+1)+"").find("input[id^=col"+(i+1)+"]").val());
+//    rows.push($("#row"+(i+1)+"").find("input[id^=rows"+(i+1)+"]").val());
+//    multiple.push($("#row"+(i+1)+"").find("input[name^='multiple']:checked").val());
+//    //optioninput.push($("#row"+i+"").find("div[id^=dynamicopt]").find("#option0").val())
+//    nooption.push($("#row"+(i+1)+"").find("input[id^='nooption']").val());
+//    ishidden.push($("#row"+(i+1)+"").find("input[name^='ishidden']:checked").val());
+//    
+//    
+//    $("#row"+(i+1)+"").find("div[id^=dynamicopt] :input").each(function(){
+//    
+//    optioninput.push($(this).val());
+//    
+//    });
+}
+
+datasave.push(datalabel);
 
 $("#loader").show();
 
@@ -56,5 +86,35 @@ function showNotification(boolean) {
     }
 
 }
+
+var nofield = 0;
+
+$(document).on("click","#addnewfield",function(){
+
+//$("#dynamicfield").empty();
+ 
+// for(var i = 0; i < $("#numberfield").val(); i++)
+// {
+
+nofield++;
+   
+   $("#dynamicfield").append($("<div class='row'><div class='col-lg-12'><div class='form-group' id='row"+nofield+"'></div></div></div>"));
+   $("#dynamicfield").find("#row"+nofield+"").append($("<label class='control-label'>Field "+(nofield)+" Label</label><input class='form-control form-group' id='label"+nofield+"'>"));
+   $("#dynamicfield").find("#row"+nofield+"").append($("<label class='control-label'>Field "+(nofield)+" Type</label><select class='form-control form-group' id='input"+nofield+"'></select"));
+   $("#dynamicfield").find("#row"+nofield+"").append($("<div class='form-check form-group requ'><label class='form-check-label'><input type='checkbox' class='form-check-input' name='required' value='required'>Required</input></label></div>"));
+   $("#dynamicfield").find("#row"+nofield+"").append($("<div class='form-check form-group requ'><label class='form-check-label'><input type='checkbox' class='form-check-input' name='ishidden' value='hidden'>Is Hidden</input></label></div>"));
+ 
+   $("#dynamicfield").find("#row"+nofield+"").append($("<div class='btnadd'><div class='dropdown'><a class='ptlbtn shcl' id='addnewfield'><i class='fas fa-plus-circle iconbtnadd'></i><span>New Field</span></a></div><div class='dropdown'><a class='ptlbtn shcl' id='delfieldbtn'><i class='fas fa-trash-alt iconbtnadd'></i><span>Delete Field</span></a></div></div>"));
+ //}
+ 
+ //loadTypeField();
+
+});
+
+$(document).on("click","#delfieldbtn",function(){
+
+$(this).parent().parent().detach();
+ 
+});
 
 </script>
