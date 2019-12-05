@@ -86,7 +86,7 @@
   </div>
   
   <div class="card-body">
-  <table id = "userlist"></table>
+  <table id = "entitylist"></table>
   </div>
   
   </div>
@@ -155,35 +155,7 @@
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
 
-<script>
-
-
-var html = '<div class="dropdown"><i class="fas fa-ellipsis-v" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i><div class="dropdown-menu" aria-labelledby="dropdownMenuButton"><a class="dropdown-item">Change Username</a><a class="dropdown-item">Change Password</a><a class="dropdown-item">Edit</a><a class="dropdown-item">Delete</a></div></div>';
-
-var dataSet = [
-    [ ""+html+"","Binh Nguyen Xuan", "Test", "binhnx", "binhnx@basebs.com", "Yes"],
-    [ ""+html+"","Quyet Le Quang", "Test", "quyetlq", "quyetlq@basebs.com", "Yes"],
-  
-];
-  
-$(document).ready(function() {
-  
-  $('#userlist').DataTable({
-  data:dataSet,
-  columns: [
-            { title: "Action" },
-            { title: "Name" },
-            { title: "Role" },
-            { title: "User Name" },
-            { title: "Email" },
-            { title: "Admin" },
-            
-        ],
- 
-  "orderCellsTop": true,
-  });
-  });
-</script>
+<?!= include('entities-js');?>
 
 
 <!-- Page level custom scripts -->

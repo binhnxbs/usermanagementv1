@@ -1,0 +1,59 @@
+<script>
+
+var dataallentity = [];
+
+$(document).ready(function() {
+
+google.script.run.withSuccessHandler(loadValueOfEntity).loadValueOfEntity();
+
+function  loadValueOfEntity(data)
+{
+
+for (var i in data)
+{
+
+if(data[i][2] == "Active")
+{
+data[i][0] =  "<input type='checkbox' class='checkboxentity' name="+data[i][0]+" id="+data[i][3]+" checked>";
+}
+
+else
+data[i][0] =  "<input type='checkbox' class='checkboxentity' name="+data[i][0]+" id="+data[i][3]+">";
+
+data[i].splice(2,2);
+
+dataallentity.push(data[i]);
+}
+
+
+$('#entitylist').DataTable({
+data:dataallentity,
+columns: [
+{ title:"Enable"},
+{ title:"Entity Name",},
+],
+"columnDefs": [
+{ "width": "10%", "targets": 0 }
+],
+"orderCellsTop": true,
+});
+}
+});
+
+
+$(document).on("change",".checkboxentity",function(){
+var indexrow = parseInt($(this).attr("id"));
+var identity = $(this).attr("name");
+var status = "";
+
+if($(this).is(':checked'))
+{
+status = "Active";
+}
+
+else status = "Inactive";
+
+google.script.run.enableEntity(indexrow,identity,status);
+
+});
+</script>

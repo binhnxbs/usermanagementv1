@@ -80,6 +80,11 @@ function doGet(e) {
     return HtmlService.createTemplateFromFile('entitiesAdd').evaluate();
   }
   
+  if(e.parameter.v == "entitiesinfo")
+  {
+    return HtmlService.createTemplateFromFile('entitiesInfo').evaluate();
+  }
+  
   else
   {
     return HtmlService.createTemplateFromFile('users').evaluate();
@@ -89,15 +94,4 @@ function doGet(e) {
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename)
       .getContent();
-}
-
-function generateID(prefix, index, length) {
-
-  var numberOfZero = length - index.toString().length;
-  var ID = prefix;
-  for (i = 0; i < numberOfZero; i++) {
-    ID = ID + '0';
-  }
-  ID = ID + index.toString();
-  return ID;
 }
