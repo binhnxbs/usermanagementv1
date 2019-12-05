@@ -158,7 +158,6 @@ dataprivilege.push(dataeachprivilege);
 
 
 datasave.push(dataprivilege);
-console.log(datasave);
 
 $("#loader").show();
 
@@ -169,6 +168,7 @@ $("input[type='submit']").attr("disabled",true);
 $("input[type='button']").attr("disabled",true);
 
 google.script.run.withSuccessHandler(showNotification).createNewProfile(datasave);
+console.log(datasave);
 
 }
 

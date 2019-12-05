@@ -7,19 +7,34 @@ $(document).ready(function() {
 $("#loader").hide();
 
 $("body").removeAttr("style");
+
+google.script.run.withSuccessHandler(loadAllEntity).loadValueOfEntity();
+
 });
 
-function saveEntities(e)
+function loadAllEntity(data)
+{
+for (var i in data)
+{
+$("#selectentity").append("<option entityid="+data[i][0]+" indexrow="+data[i][3]+" entityname="+data[i][1]+">"+data[i][1]+"</option>");
+}
+}
+
+function saveEntityField(e)
 {
 e.preventDefault();
 
-var name = $("#entityname").val().trim();
+var indexrow = $("#selectentity option:selected").attr("indexrow");
+
+var entityid = $("#selectentity option:selected").attr("entityid");
+
+var entityname = $("#selectentity option:selected").attr("entityname");
 
 var datasave = [];
 
 var datalabel = [];
 
-datasave.push([emailUser,name]);
+datasave.push([indexrow,entityid,entityname]);
 
 console.log(datasave);
 
@@ -59,7 +74,9 @@ $("input[type='submit']").attr("disabled",true);
 
 $("input[type='button']").attr("disabled",true);
 
-google.script.run.withSuccessHandler(showNotification).createNewEntity(datasave);
+console.log(datasave);
+
+google.script.run.withSuccessHandler(showNotification).saveEntityField(datasave);
 
 }
 
@@ -95,9 +112,9 @@ nofield++;
    
    $("#dynamicfield").append($("<div class='row'><div class='col-lg-12'><div class='form-group' id='row"+nofield+"'></div></div></div>"));
    $("#dynamicfield").find("#row"+nofield+"").append($("<label class='control-label'>Field "+(nofield)+" Label</label><input class='form-control form-group' id='label"+nofield+"'>"));
-   $("#dynamicfield").find("#row"+nofield+"").append($("<label class='control-label'>Field "+(nofield)+" Type</label><select class='form-control form-group' id='input"+nofield+"'></select"));
-   $("#dynamicfield").find("#row"+nofield+"").append($("<div class='form-check form-group requ'><label class='form-check-label'><input type='checkbox' class='form-check-input' name='required' value='required'>Required</input></label></div>"));
-   $("#dynamicfield").find("#row"+nofield+"").append($("<div class='form-check form-group requ'><label class='form-check-label'><input type='checkbox' class='form-check-input' name='ishidden' value='hidden'>Is Hidden</input></label></div>"));
+//   $("#dynamicfield").find("#row"+nofield+"").append($("<label class='control-label'>Field "+(nofield)+" Type</label><select class='form-control form-group' id='input"+nofield+"'></select"));
+//   $("#dynamicfield").find("#row"+nofield+"").append($("<div class='form-check form-group requ'><label class='form-check-label'><input type='checkbox' class='form-check-input' name='required' value='required'>Required</input></label></div>"));
+//   $("#dynamicfield").find("#row"+nofield+"").append($("<div class='form-check form-group requ'><label class='form-check-label'><input type='checkbox' class='form-check-input' name='ishidden' value='hidden'>Is Hidden</input></label></div>"));
  
    $("#dynamicfield").find("#row"+nofield+"").append($("<div class='btnadd'><div class='dropdown'><a class='ptlbtn shcl' id='addnewfield'><i class='fas fa-plus-circle iconbtnadd'></i><span>New Field</span></a></div><div class='dropdown'><a class='ptlbtn shcl' id='delfieldbtn'><i class='fas fa-trash-alt iconbtnadd'></i><span>Delete Field</span></a></div></div>"));
  
