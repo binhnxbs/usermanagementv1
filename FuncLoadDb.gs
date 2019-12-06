@@ -20,3 +20,10 @@ function loadValueOfEntity()
   
   return data;
 }
+
+function loadValueEditProfile(id){
+
+  var data = ModunUserMan.loadValueEditProfile(id);
+  return data;
+  
+}
