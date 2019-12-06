@@ -58,7 +58,7 @@
 </a>
 </div>-->
 
-<form onsubmit="saveProfiles(event);">
+<form onsubmit="saveProfilesEdit(event);">
       <div class = "row">
       <div class="form-group col-lg-12">
       <label>Profile Name <span class="required">*</span> :</label>
@@ -146,6 +146,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
+<script>
+var idprofile = <?= dataid; ?>;
+</script>
 
 <!-- Page level custom scripts -->
 <?!= include('profilesEdit-js');?>

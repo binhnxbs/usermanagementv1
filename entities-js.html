@@ -4,6 +4,10 @@ var dataallentity = [];
 
 $(document).ready(function() {
 
+$("#loader").hide();
+
+$("body").removeAttr("style");
+
 google.script.run.withSuccessHandler(loadValueOfEntity).loadValueOfEntity();
 
 function  loadValueOfEntity(data)
@@ -53,7 +57,27 @@ status = "Active";
 
 else status = "Inactive";
 
-google.script.run.enableEntity(indexrow,identity,status);
+$("#loader").show();
+
+$("body").css({"cursor":"wait","pointer-events":"none"});
+
+google.script.run.withSuccessHandler(showNotification).enableEntity(indexrow,identity,status);
 
 });
+
+function showNotification(boolean) {
+
+    if (boolean) {
+      console.log(boolean);
+      
+      $("#loader").hide();
+      
+      $("body").removeAttr("style");
+      
+      
+    } else {
+      console.log(boolean);
+    }
+
+}
 </script>
