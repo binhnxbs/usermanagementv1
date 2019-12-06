@@ -26,3 +26,9 @@ function saveEntityField(data)
   
   return e;
 }
+
+function editProfile(data){
+
+  
+  
+}

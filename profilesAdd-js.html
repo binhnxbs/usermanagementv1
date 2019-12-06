@@ -143,6 +143,19 @@ var identity = $("tbody tr:eq("+i+") input[id^='ENT']").attr("id");
 
 $.each($("tbody tr input[name="+identity+"]"), function(){
 
+if($(this).hasClass("checkboxwithnametitle"))
+{
+if($(this).is(":checked"))
+{
+dataeachprivilege.push($(this).val());
+}
+
+else
+dataeachprivilege.push($(this).val());
+}
+
+else
+{
 if($(this).is(":checked"))
 {
 dataeachprivilege.push($(this).val());
@@ -150,6 +163,7 @@ dataeachprivilege.push($(this).val());
 
 else
 dataeachprivilege.push("0");
+}
 
 });
 
