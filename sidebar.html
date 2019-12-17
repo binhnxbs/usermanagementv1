@@ -7,7 +7,7 @@
 <!--<i class="fas fa-laugh-wink"></i>-->
 <!--<img style="width:10px; height:20px" src = "https://drive.google.com/uc?id=1g3aTaAdkS2KXjcxCNgd0C7TFjm9nk6v4">-->
 <!--</div>-->
-<div class="sidebar-brand-text mx-3">User Management</div>
+<div class="sidebar-brand-text mx-3">Administrator</div>
 </a>
 
 <!-- Divider -->
@@ -21,9 +21,14 @@
 </li>
 
 <!-- Divider -->
-<hr class="sidebar-divider my-0">
+<hr class="sidebar-divider my-0" id="divideentity">
 
 <li class="nav-item">
+<a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseAll" aria-expanded="true" aria-controls="collapseAll">
+<i class="fas fa-cog"></i>
+<span>Setting</span>
+</a>
+<div id="collapseAll" class="collapse" aria-labelledby="headingAll">
 <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 <i class="fas fa-users"></i>
 <span>User Management</span>
@@ -37,32 +42,64 @@
 <a class="collapse-item" href="https://script.google.com/a/basebs.com/macros/s/AKfycbyse0zFrxZu0g39M42tDFl2hqzCL0jwCNcVG0JqH_zMw-iP3ilK/exec?v=groups">Groups</a>
 </div>
 </div>
-</li>
 
-<!-- Divider -->
-<hr class="sidebar-divider my-0">
-
-
-<li class="nav-item">
 <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
 <i class="fas fa-fw fa-folder-open"></i>
 <span>Entity Management</span>
 </a>
-<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
 <div class="bg-white py-2 collapse-inner rounded">
 <a class="collapse-item" href="https://script.google.com/a/basebs.com/macros/s/AKfycbyse0zFrxZu0g39M42tDFl2hqzCL0jwCNcVG0JqH_zMw-iP3ilK/exec?v=entities">Entities</a>
 <a class="collapse-item" href="https://script.google.com/a/basebs.com/macros/s/AKfycbyse0zFrxZu0g39M42tDFl2hqzCL0jwCNcVG0JqH_zMw-iP3ilK/exec?v=entitiesinfo">Entity Fields</a>
 </div>
 </div>
+</div>
 </li>
+
+<!-- Divider -->
+<!--<hr class="sidebar-divider my-0">
+
+
+<li class="nav-item">
+
+</li>-->
+
+<!-- Divider -->
+<!--<hr class="sidebar-divider my-0">
+
+
+<li class="nav-item">
+
+</li>-->
 
 <!-- Divider -->
 <hr class="sidebar-divider d-none d-md-block">
 
 <!-- Sidebar Toggler (Sidebar) -->
-<div class="text-center d-none d-md-inline">
-<button class="rounded-circle border-0" id="sidebarToggle"></button>
+<div class="text-center d-none d-md-inline" hidden>
+<button class="rounded-circle border-0" id="sidebarToggle" hidden></button>
 </div>
 
 </ul>
 <!-- End of Sidebar -->
+
+<script>
+
+$(document).ready(function() {
+
+
+google.script.run.withSuccessHandler(loadEntityMenuSidebar).loadEntitySidebar();
+
+
+});
+
+
+function loadEntityMenuSidebar(data)
+{
+for (var i in data)
+{
+$('<li class="nav-item"><a class="nav-link" href="https://script.google.com/a/basebs.com/macros/s/AKfycbyse0zFrxZu0g39M42tDFl2hqzCL0jwCNcVG0JqH_zMw-iP3ilK/exec"><i class="fas fa-fw fa-folder-open"></i><span>'+data[i][1]+'</span></a></li><hr class="sidebar-divider my-0">').insertAfter("#divideentity");
+}
+}
+
+</script>

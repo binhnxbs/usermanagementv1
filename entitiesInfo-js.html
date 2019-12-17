@@ -1,5 +1,9 @@
 <script>
 
+var indexexternal = "";
+
+var indexrowex = "";
+
 var emailUser = "binhnx@gmail.com";
 
 $(document).ready(function() {
@@ -10,14 +14,95 @@ $("body").removeAttr("style");
 
 google.script.run.withSuccessHandler(loadAllEntity).loadValueOfEntity();
 
+$('input').tagsinput();
+
+//console.log($("#selectentity option:selected").attr("indexrow"));
+
+//google.script.run.withSuccessHandler(loadFieldOfEntity).loadFieldOfEntity($("#selectentity option:selected").attr("indexrow"));
+
 });
 
 function loadAllEntity(data)
 {
+$("#selectentity").empty();
+$("#selectentity").append("<option selected disabled>Please select an option</option>");
 for (var i in data)
 {
 $("#selectentity").append("<option entityid="+data[i][0]+" indexrow="+data[i][3]+" entityname="+data[i][1]+">"+data[i][1]+"</option>");
 }
+}
+
+function loadExternalEntity(data)
+{
+$("select[id^='externallink"+indexexternal+"']").empty();
+$("select[id^='externallink"+indexexternal+"']").append("<option value=''>Please select an option</option>");
+for (var i in data)
+{
+$("select[id^='externallink"+indexexternal+"']").append("<option entityid="+data[i][0]+" indexrow="+data[i][3]+" entityname="+data[i][1]+" entitylink="+data[i][4]+" value="+data[i][4]+'/'+data[i][1]+">"+data[i][1]+"</option>");
+}
+}
+
+async function loadFieldOfEntity(data)
+{
+  google.script.run.withSuccessHandler(loadTypeOfField).loadTypeOfField();
+  
+  console.log(data);
+  
+  if(data != null)
+  {
+  for(var i in data[0][0])
+  {
+   $("#dynamicfield").append($("<div class='row draggable'><div class='col-lg-12 fieldborder'><div class='form-group' id='row"+(parseInt(i)+1)+"'></div></div></div>"));
+   $("#dynamicfield").find("#row"+(parseInt(i)+1)+"").append($("<label class='control-label'>Field "+(parseInt(i)+1)+" Label</label><input class='form-control form-group' id='label"+(parseInt(i)+1)+"'>"));
+   $("#dynamicfield").find("#row"+(parseInt(i)+1)+"").append($("<label class='control-label'>Field "+(parseInt(i)+1)+" Type</label><select class='form-control form-group' id='input"+(parseInt(i)+1)+"' required></select"));
+   $("#dynamicfield").find("#row"+(parseInt(i)+1)+"").append($("<div class='form-check form-group requ'><label class='form-check-label'><input type='checkbox' class='form-check-input' name='required"+(parseInt(i)+1)+"' value='required'>Required</input></label></div>"));
+   $("#dynamicfield").find("#row"+(parseInt(i)+1)+"").append($("<div class='form-check form-group requ'><label class='form-check-label'><input type='checkbox' class='form-check-input' name='ishidden' value='hidden'>Is Hidden</input></label></div>"));
+   $("#dynamicfield").find("#label"+(parseInt(i)+1)+"").val(data[0][0][i]);
+   $("#dynamicfield").find("#row"+(parseInt(i)+1)+"").append($("<div class='btnadd btnaddeachfiled'><div class='dropdown'><a class='ptlbtn shcl' id='addnewfield'><i class='fas fa-plus-circle iconbtnadd'></i><span>New Field</span></a></div><div class='dropdown'><a class='ptlbtn shcl' id='delfieldbtn'><i class='fas fa-trash-alt iconbtnadd'></i><span>Delete Field</span></a></div></div>"));
+  }
+  
+  await sleep(2000);
+  
+  for (var i in data[1])
+  {
+    $("select[id='input"+(parseInt(i)+1)+"']").val(data[1][i][3]);
+    
+    if(data[1][i][6] == "required")
+    {
+    $("#row"+(i+1)+"").find("input[name^='required']").prop("checked",true);
+    }
+    
+    console.log(parseInt(i)+1);
+    console.log(data[1][i][3]);
+  }
+  
+  $(document).find("[class*='disabled']").removeClass("disabled");
+  }
+  else
+  {
+   $(document).find("[class*='disabled']").removeClass("disabled");
+  }
+}
+
+function loadFieldOfExternal(data)
+{
+$("select[id^='externalcol"+indexrowex+"']").empty();
+$("select[id^='externalcol"+indexrowex+"']").append("<option value=''>Please select an option</option>");
+for (var i in data[0])
+{
+$("select[id^='externalcol"+indexrowex+"']").append("<option value="+(parseInt(i)+1)+">"+data[0][i]+"</option>");
+}
+}
+
+function loadTypeOfField(data)
+{
+  $("select[id^='input']").empty();
+  $("select[id^='input']").append("<option value=''>Please select an option</option>");
+  for(var i in data)
+  {
+  $("select[id^='input']").append("<option value="+data[i][1]+" type="+data[i][2]+">"+data[i][0]+"</option>");
+  //console.log(data[i]);
+  }
 }
 
 function saveEntityField(e)
@@ -34,29 +119,57 @@ var datasave = [];
 
 var datalabel = [];
 
+var inputid = [];
+var inputlabel = [];
+var inputtype = [];
+var inputcheck = [];
+var externallink = [];
+var inputvalue = [];
+var optioninput = [];
+var required = [];
+var readonly = [];
+var placeholder = [];
+var maxlength = [];
+var cols = [];
+var rows = [];
+var nooption = [];
+var ishidden = [];
+
 datasave.push([indexrow,entityid,entityname]);
 
-console.log(datasave);
+//console.log(datasave);
 
 var fieldlen = $("div[id^='row']").length;
 
 for (var i = 0; i < fieldlen; i++)
 {
-//    inputid.push($("#row"+(i+1)+"").find("select[id^='input']").attr("id"));
+    inputid.push($("#row"+(i+1)+"").find("select[id^='input']").attr("id"));
     datalabel.push($("#row"+(i+1)+"").find("input[id^='label']").val());
-//    inputtype.push($("#row"+(i+1)+"").find("#input"+(i+1)+"").val());
-//    required.push($("#row"+(i+1)+"").find("input[name^='required']:checked").val());
-//    readonly.push($("#row"+(i+1)+"").find("input[name^='readonly']:checked").val());
-//    placeholder.push($("#row"+(i+1)+"").find("input[id^=pl"+(i+1)+"]").val());
-//    maxlength.push($("#row"+(i+1)+"").find("input[id^=ml"+(i+1)+"]").val());
-//    cols.push($("#row"+(i+1)+"").find("input[id^=col"+(i+1)+"]").val());
-//    rows.push($("#row"+(i+1)+"").find("input[id^=rows"+(i+1)+"]").val());
+    inputcheck.push($("#row"+(i+1)+"").find("#input"+(i+1)+" option:selected").attr("type"));
+    inputtype.push($("#row"+(i+1)+"").find("#input"+(i+1)+"").val());
+    
+    var externallinkid = $("#row"+(i+1)+"").find("select[id^='externallink']").val();
+    
+    //var externallinksheetname = $("#row"+(i+1)+"").find("select[id^='externallink']").find("option:selected").attr("entityname");
+    
+    var externallinkcol = $("#row"+(i+1)+"").find("select[id^='externalcol']").val();
+    
+    var externallinkstr = externallinkid + "/" + externallinkcol;
+    
+    
+    externallink.push(externallinkstr);
+    required.push($("#row"+(i+1)+"").find("input[name^='required']:checked").val());
+    readonly.push($("#row"+(i+1)+"").find("input[name^='readonly']:checked").val());
+    placeholder.push($("#row"+(i+1)+"").find("input[id^=pl"+(i+1)+"]").val());
+    maxlength.push($("#row"+(i+1)+"").find("input[id^=ml"+(i+1)+"]").val());
+    cols.push($("#row"+(i+1)+"").find("input[id^=col"+(i+1)+"]").val());
+    rows.push($("#row"+(i+1)+"").find("input[id^=rows"+(i+1)+"]").val());
 //    multiple.push($("#row"+(i+1)+"").find("input[name^='multiple']:checked").val());
 //    //optioninput.push($("#row"+i+"").find("div[id^=dynamicopt]").find("#option0").val())
-//    nooption.push($("#row"+(i+1)+"").find("input[id^='nooption']").val());
-//    ishidden.push($("#row"+(i+1)+"").find("input[name^='ishidden']:checked").val());
-//    
-//    
+    nooption.push($("#row"+(i+1)+"").find("input[id^='nooption']").val());
+    ishidden.push($("#row"+(i+1)+"").find("input[name^='ishidden']:checked").val());
+    
+    
 //    $("#row"+(i+1)+"").find("div[id^=dynamicopt] :input").each(function(){
 //    
 //    optioninput.push($(this).val());
@@ -64,7 +177,7 @@ for (var i = 0; i < fieldlen; i++)
 //    });
 }
 
-datasave.push(datalabel);
+datasave.push([datalabel,inputid,inputcheck,inputtype,externallink,nooption,required,readonly,placeholder,maxlength,cols,rows,ishidden]);
 
 $("#loader").show();
 
@@ -104,28 +217,260 @@ function showNotification(boolean) {
 
 }
 
-var nofield = 0;
-
 $(document).on("click","#addnewfield",function(){
 
+var nofield = $("div[id^='row']").length;
+
 nofield++;
+
+//console.log("nofield" +nofield);
    
-   $("#dynamicfield").append($("<div class='row'><div class='col-lg-12'><div class='form-group' id='row"+nofield+"'></div></div></div>"));
+   $("#dynamicfield").append($("<div class='row draggable'><div class='col-lg-12 fieldborder'><div class='form-group' id='row"+nofield+"'></div></div></div>"));
    $("#dynamicfield").find("#row"+nofield+"").append($("<label class='control-label'>Field "+(nofield)+" Label</label><input class='form-control form-group' id='label"+nofield+"'>"));
-//   $("#dynamicfield").find("#row"+nofield+"").append($("<label class='control-label'>Field "+(nofield)+" Type</label><select class='form-control form-group' id='input"+nofield+"'></select"));
-//   $("#dynamicfield").find("#row"+nofield+"").append($("<div class='form-check form-group requ'><label class='form-check-label'><input type='checkbox' class='form-check-input' name='required' value='required'>Required</input></label></div>"));
-//   $("#dynamicfield").find("#row"+nofield+"").append($("<div class='form-check form-group requ'><label class='form-check-label'><input type='checkbox' class='form-check-input' name='ishidden' value='hidden'>Is Hidden</input></label></div>"));
+   $("#dynamicfield").find("#row"+nofield+"").append($("<label class='control-label'>Field "+(nofield)+" Type</label><select class='form-control form-group' id='input"+nofield+"' required></select"));
+   $("#dynamicfield").find("#row"+nofield+"").append($("<div class='form-check form-group requ'><label class='form-check-label'><input type='checkbox' class='form-check-input' name='required' value='required'>Required</input></label></div>"));
+   $("#dynamicfield").find("#row"+nofield+"").append($("<div class='form-check form-group requ'><label class='form-check-label'><input type='checkbox' class='form-check-input' name='ishidden' value='hidden'>Is Hidden</input></label></div>"));
  
-   $("#dynamicfield").find("#row"+nofield+"").append($("<div class='btnadd'><div class='dropdown'><a class='ptlbtn shcl' id='addnewfield'><i class='fas fa-plus-circle iconbtnadd'></i><span>New Field</span></a></div><div class='dropdown'><a class='ptlbtn shcl' id='delfieldbtn'><i class='fas fa-trash-alt iconbtnadd'></i><span>Delete Field</span></a></div></div>"));
+   $("#dynamicfield").find("#row"+nofield+"").append($("<div class='btnadd btnaddeachfiled'><div class='dropdown'><a class='ptlbtn shcl' id='addnewfield'><i class='fas fa-plus-circle iconbtnadd'></i><span>New Field</span></a></div><div class='dropdown'><a class='ptlbtn shcl' id='delfieldbtn'><i class='fas fa-trash-alt iconbtnadd'></i><span>Delete Field</span></a></div></div>"));
  
- //loadTypeField();
+ google.script.run.withSuccessHandler(loadTypeOfField).loadTypeOfField();
 
 });
 
 $(document).on("click","#delfieldbtn",function(){
 
-$(this).parent().parent().detach();
+$(this).parent().parent().parent().parent().parent().detach();
+
+reorderField();
  
 });
 
+$(document).on("change","#selectentity",function()
+{
+var indexrow = $(this).find("option:selected").attr("indexrow");
+
+console.log(indexrow);
+
+$("#dynamicfield").empty();
+
+$(document).find("[disabled]").removeAttr("disabled");
+
+google.script.run.withSuccessHandler(loadFieldOfEntity).loadFieldOfEntity(indexrow);
+
+}
+);
+
+
+var dragfield = document.getElementById('dynamicfield');
+
+new Sortable(dragfield, {
+    //handle: '.handle', // handle's class
+    animation: 150,
+    onChange: function(/**Event*/evt) {
+		evt.newIndex // most likely why this event is used is to get the dragging element's current index
+		// same properties as onEnd
+        console.log(evt);
+        //reorderField();
+	},
+    onEnd: function (/**Event*/evt) {
+//		var itemEl = evt.item;  // dragged HTMLElement
+//		evt.to;    // target list
+//		evt.from;  // previous list
+//		evt.oldIndex;  // element's old index within old parent
+//		evt.newIndex;  // element's new index within new parent
+//		evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
+//		evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
+//		evt.clone // the clone element
+//		evt.pullMode;  // when item is in another sortable: `"clone"` if cloning, `true` if moving
+
+        //reorderField();
+	},
+});
+
+function reorderField()
+{
+var nofield = $("div[id^='row']").length;
+console.log(nofield);
+for (var i = 0; i < nofield; i++)
+{
+$("#dynamicfield").find("div[class*='draggable']:eq("+i+")").find(".fieldborder").find("div[id^='row']").attr("id","row"+(i+1)+"");
+}
+}
+
+$(document).on("change","select[id^='input']",function(){
+
+switch ($(this).val())
+{
+   case "text":
+  
+   case "email":
+   
+   case "password":
+   
+   console.log("text");
+   
+   $(this).parent().find("div[id^='typetextcon']").detach();
+   
+   $(this).parent().find("div[id^='textareacon']").detach();
+   
+   $(this).parent().find("div[id^='typecheckcon']").detach();
+   
+   $(this).parent().find("div[id^='typeselectcon']").detach();
+
+   $("<div class='form-group' id='typetextcon'></div>").insertBefore($(this).parent().find("div[class*='btnaddeachfiled']"));
+
+   $(this).parent().find('#typetextcon').append($("<div class='form-check form-group rea'><label class='form-check-label'><input type='checkbox' class='form-check-input' name='readonly' value='readonly'>Read only</input></label></div>"));
+
+   var index = parseInt($(this).parent().attr("id").substr(3,1));
+   
+   $(this).parent().find('#typetextcon').append($("<div class='form-group'><label class='control-label'>Field "+index+" Placeholder</label><input class='form-control form-group' id='pl"+index+"'></div>"));
+
+   $(this).parent().find('#typetextcon').append($("<div class='form-group'><label class='control-label'>Field "+index+" Max length input</label><input class='form-control form-group' id='ml"+index+"'></div>"));
+  
+   break;
+   
+   case "textarea":
+   
+   $(this).parent().find("div[id^='typetextcon']").detach();
+   
+   $(this).parent().find("div[id^='textareacon']").detach();
+   
+   $(this).parent().find("div[id^='typecheckcon']").detach();
+   
+   $(this).parent().find("div[id^='typeselectcon']").detach();
+
+   $("<div class='form-group' id='typetextcon'></div>").insertBefore($(this).parent().find("div[class*='btnaddeachfiled']"));
+
+   $(this).parent().find('#typetextcon').append($("<div class='form-check form-group rea'><label class='form-check-label'><input type='checkbox' class='form-check-input' name='readonly' value='readonly'>Read only</input></label></div>"));
+
+   var index = parseInt($(this).parent().attr("id").substr(3,1));
+
+
+   $(this).parent().append($("<div class='form-group' id='textareacon'></div>"));
+   $("<div class='form-group' id='textareacon'></div>").insertBefore($(this).parent().find("div[class*='btnaddeachfiled']"));
+
+   $(this).parent().find('#typetextcon').append($("<div class='form-group'><label class='control-label'>Field "+index+" Placeholder</label><input class='form-control form-group' id='pl"+index+"'></div>"));
+
+   $(this).parent().find('#typetextcon').append($("<div class='form-group'><label class='control-label'>Field "+index+" Max length input</label><input class='form-control form-group' id='ml"+index+"'></div>"));
+   
+   $(this).parent().find('#textareacon').append($("<div class='form-group'><label class='control-label'>Field "+index+" Column</label><input class='form-control form-group' id='col"+index+"'></div>"));
+
+   $(this).parent().find('#textareacon').append($("<div class='form-group'><label class='control-label'>Field "+index+" Row</label><input class='form-control form-group' id='rows"+index+"'></div>"));
+   
+   break;
+   
+   case "radio":
+   
+   case "checkbox":
+   
+   $(this).parent().find("div[id^='typetextcon']").detach();
+   
+   $(this).parent().find("div[id^='textareacon']").detach();
+   
+   $(this).parent().find("div[id^='typecheckcon']").detach();
+   
+   $(this).parent().find("div[id^='typeselectcon']").detach();
+
+   $("<div class='form-group' id='typeselectcon'></div>").insertBefore($(this).parent().find("div[class*='btnaddeachfiled']"));
+
+   $(this).parent().find("div[id^='typeselectcon']").append($("<div class='form-check form-group external'><label class='form-check-label'><input type='checkbox' class='form-check-input' name='externallink' value='externallink'>External Link</input></label></div>"));
+   
+   var index = parseInt($(this).parent().attr("id").substr(3,1));
+   
+   $(this).parent().find('#typeselectcon').append($("<div class='form-group'><label class='control-label'>Field "+index+" Options</label><input class='form-control form-group' id='nooption' data-role='tagsinput' required></div>"));
+   
+   //$(this).parent().find('#typeselectcon').append($("<div class='form-group'><div id='dynamicopt'></div></div>"));
+   
+   $('#nooption').tagsinput({
+   
+   });
+   
+   break;
+   
+   case "select":
+   
+   $(this).parent().find("div[id^='typetextcon']").detach();
+   
+   $(this).parent().find("div[id^='textareacon']").detach();
+   
+   $(this).parent().find("div[id^='typecheckcon']").detach();
+   
+   $(this).parent().find("div[id^='typeselectcon']").detach();
+
+   $("<div class='form-group' id='typeselectcon'></div>").insertBefore($(this).parent().find("div[class*='btnaddeachfiled']"));
+   
+   //$(this).parent().find("div[id^='typeselectcon']").append($("<div class='form-check form-group multi'><label class='form-check-label'><input type='checkbox' class='form-check-input' name='multiple' value='multiple'>Multiple Select</input></label></div>"));
+
+   $(this).parent().find("div[id^='typeselectcon']").append($("<div class='form-check form-group external'><label class='form-check-label'><input type='checkbox' class='form-check-input' name='externallink' value='externallink'>External Link</input></label></div>"));
+   
+   var index = parseInt($(this).parent().attr("id").substr(3,1));
+   
+   $(this).parent().find('#typeselectcon').append($("<div class='form-group'><label class='control-label'>Field "+index+" Options</label><input class='form-control form-group' id='nooption' data-role='tagsinput' required></div>"));
+   
+   //$(this).parent().find('#typeselectcon').append($("<div class='form-group'><div id='dynamicopt'></div></div>"));
+   
+   $('#nooption').tagsinput({
+   
+   });
+   
+   break;
+   
+   default:
+   
+   $(this).parent().find("div[id^='typetextcon']").detach();
+   
+   $(this).parent().find("div[id^='textareacon']").detach();
+   
+   $(this).parent().find("div[id^='typecheckcon']").detach();
+   
+   $(this).parent().find("div[id^='typeselectcon']").detach();
+   
+   
+}
+});
+
+$(document).on("change","input[name='externallink']",function(){
+
+if($(this).is(":checked"))
+{
+var index = parseInt($(this).parent().parent().parent().parent().attr("id").substr(3,1));
+
+indexexternal = index;
+
+$(this).parent().parent().parent().parent().find("div[id^='typeselectcon']").find("div:not(.external)").detach();
+$(this).parent().parent().parent().parent().find("div[id^='typeselectcon']").append($("<div class='form-group'><label class='control-label'>Field "+index+" External Link</label><select class='form-control form-group' id='externallink"+index+"' indexid="+index+" required></select></div>"));
+google.script.run.withSuccessHandler(loadExternalEntity).loadValueOfEntity();
+}
+
+else
+{
+var index = parseInt($(this).parent().parent().parent().parent().attr("id").substr(3,1));
+$(this).parent().parent().parent().parent().find("div[id^='typeselectcon']").find("div:not(.external)").detach();
+$(this).parent().parent().parent().parent().find('#typeselectcon').append($("<div class='form-group'><label class='control-label'>Field "+index+" Options</label><input class='form-control form-group' id='nooption' data-role='tagsinput' required></div>"));
+
+//$(this).parent().parent().parent().parent().find('#typeselectcon').append($("<div class='form-group'><div id='dynamicopt'></div></div>"));
+$('#nooption').tagsinput({
+ 
+});
+}
+
+});
+
+$(document).on("change","select[id^='externallink']",function(){
+
+var index = $(this).attr("indexid");
+
+indexrowex = $(this).find("option:selected").attr("indexrow");
+
+console.log(indexrowex);
+
+$(this).parent().parent().append($("<div class='form-group'><label class='control-label'>Field "+index+" Column</label><select class='form-control form-group' id='externalcol"+indexrowex+"' required></select></div>"));
+
+google.script.run.withSuccessHandler(loadFieldOfExternal).loadFieldOfEntity(indexrowex);
+
+});
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 </script>

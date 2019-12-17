@@ -1,5 +1,4 @@
 var IDDBSYS = "1hAKrx46NY5lYHpSiAlj2mPLVjxp9D2QKGRnS3JJb2WM";
-
 var IDFOLDERDBSYS = "1Iy3ICeCkLi9jKQBXUzVX_X3iftBee2n4";
 
 function doGet(e) {

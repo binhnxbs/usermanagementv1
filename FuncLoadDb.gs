@@ -15,15 +15,36 @@ function loadValueOfProfile() {
 
 function loadValueOfEntity()
 {
- 
   var data = ModuleEntityMana.loadValueOfEntity();
   
   return data;
 }
 
-function loadValueEditProfile(id){
+function loadEntitySidebar()
+{
+  var data = ModuleEntityMana.loadEntitySidebar();
+  
+  return data;
+}
 
+
+function loadFieldOfEntity(indexrow)
+{
+  var data = ModuleEntityMana.loadFieldOfEntity(indexrow);
+  
+  Logger.log(data);
+  
+  return data;
+}
+
+function loadValueEditProfile(id)
+{
   var data = ModunUserMan.loadValueEditProfile(id);
   return data;
-  
+}
+
+function loadTypeOfField()
+{
+  var data = ModuleEntityMana.loadTypeOfField();
+  return data;
 }
